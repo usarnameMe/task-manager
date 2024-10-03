@@ -1,14 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Your Tasks</h2>
-    <ul>
-        {% for task in object_list %}
-        <li>
-            <strong>{{ task.title }}</strong> - {{ task.status }} (Priority: {{ task.priority }})
-            <a href="{% url 'task_update' task.pk %}">Edit</a>
-            <a href="{% url 'task_delete' task.pk %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
+<h2>Your Tasks</h2>
+<div class="task-board">
+    <div class="column">
+        <h3>To Do</h3>
+        <div class="task-list">
+            {% for task in tasks_to_do %}
+            <div class="task-card">
+                <h4>{{ task.title }}</h4>
+                <p>{{ task.description }}</p>
+                <p>Priority: {{ task.priority }}</p>
+                <a href="{% url 'task_update' task.pk %}">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="column">
+        <h3>In Progress</h3>
+        <div class="task-list">
+            {% for task in tasks_in_progress %}
+            <div class="task-card">
+                <h4>{{ task.title }}</h4>
+                <p>{{ task.description }}</p>
+                <p>Priority: {{ task.priority }}</p>
+                <a href="{% url 'task_update' task.pk %}">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="column">
+        <h3>Review</h3>
+        <div class="task-list">
+            {% for task in tasks_review %}
+            <div class="task-card">
+                <h4>{{ task.title }}</h4>
+                <p>{{ task.description }}</p>
+                <p>Priority: {{ task.priority }}</p>
+                <a href="{% url 'task_update' task.pk %}">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="column">
+        <h3>Done</h3>
+        <div class="task-list">
+            {% for task in tasks_done %}
+            <div class="task-card">
+                <h4>{{ task.title }}</h4>
+                <p>{{ task.description }}</p>
+                <p>Priority: {{ task.priority }}</p>
+                <a href="{% url 'task_update' task.pk %}">Edit</a>
+                <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
