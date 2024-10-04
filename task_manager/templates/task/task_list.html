@@ -3,11 +3,11 @@
 {% block content %}
 <h2>Your Tasks</h2>
 <div class="task-board">
-    <div class="column">
+    <div class="column" data-status="To Do">
         <h3>To Do</h3>
-        <div class="task-list">
+        <div class="task-list" data-list="to-do">
             {% for task in tasks_to_do %}
-            <div class="task-card">
+            <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
                 <p>Priority: {{ task.priority }}</p>
@@ -17,11 +17,12 @@
             {% endfor %}
         </div>
     </div>
-    <div class="column">
+
+    <div class="column" data-status="In Progress">
         <h3>In Progress</h3>
-        <div class="task-list">
+        <div class="task-list" data-list="in-progress">
             {% for task in tasks_in_progress %}
-            <div class="task-card">
+            <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
                 <p>Priority: {{ task.priority }}</p>
@@ -31,11 +32,12 @@
             {% endfor %}
         </div>
     </div>
-    <div class="column">
+
+    <div class="column" data-status="Review">
         <h3>Review</h3>
-        <div class="task-list">
+        <div class="task-list" data-list="review">
             {% for task in tasks_review %}
-            <div class="task-card">
+            <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
                 <p>Priority: {{ task.priority }}</p>
@@ -45,11 +47,12 @@
             {% endfor %}
         </div>
     </div>
-    <div class="column">
+
+    <div class="column" data-status="Done">
         <h3>Done</h3>
-        <div class="task-list">
+        <div class="task-list" data-list="done">
             {% for task in tasks_done %}
-            <div class="task-card">
+            <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
                 <p>Priority: {{ task.priority }}</p>
@@ -60,4 +63,73 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+
+<script>
+let draggedTask = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    document.querySelectorAll('.task-card').forEach(card => {
+        card.addEventListener('dragstart', handleDragStart);
+    });
+
+    document.querySelectorAll('.column').forEach(column => {
+        column.addEventListener('dragover', handleDragOver);
+        column.addEventListener('drop', handleDrop);
+    });
+});
+
+function handleDragStart(e) {
+    draggedTask = e.target;
+    e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+
+    const column = e.target.closest('.column');
+    if (!column) return;
+
+    const newStatus = column.getAttribute('data-status');
+    const taskId = draggedTask.getAttribute('data-task-id');
+
+    column.querySelector('.task-list').appendChild(draggedTask);
+
+    updateTaskStatus(taskId, newStatus);
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    const csrfToken = document.getElementById('csrfToken').value;
+
+    fetch(`/update_status/${taskId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.success) {
+            console.error("Failed to update task status:", data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Error updating task status:", error);
+    });
+}
+</script>
 {% endblock %}

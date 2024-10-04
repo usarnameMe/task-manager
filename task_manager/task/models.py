@@ -4,6 +4,7 @@ from django.utils import timezone
 
 
 class Task(models.Model):
+    DoesNotExist = None
     objects = None
     PRIORITY_CHOICES = [
         ('Low', 'Low'),
@@ -20,7 +21,7 @@ class Task(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='To Do')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='to do')
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='Low')
     deadline = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

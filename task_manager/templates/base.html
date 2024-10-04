@@ -18,6 +18,7 @@
         </nav>
     </header>
     <main>
+        <form id="csrf-token">{% csrf_token %}</form>
         {% block content %}
         {% endblock %}
     </main>
