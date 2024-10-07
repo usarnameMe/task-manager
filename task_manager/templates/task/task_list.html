@@ -34,7 +34,7 @@
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
-                <a href="#" class="btn-delete" data-task-id="{{ task.pk }}" data-task-title="{{ task.title }}">
+                <a href="{% url 'task_delete' task.pk %}" class="btn-delete">
                     <img src="{% static 'images/delete.png' %}" alt="Delete" class="action-icon">
                 </a>
             </div>
@@ -53,7 +53,7 @@
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
-                <a href="#" class="btn-delete" data-task-id="{{ task.pk }}" data-task-title="{{ task.title }}">
+                <a href="{% url 'task_delete' task.pk %}" class="btn-delete">
                     <img src="{% static 'images/delete.png' %}" alt="Delete" class="action-icon">
                 </a>
             </div>
@@ -72,36 +72,38 @@
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
-                <a href="#" class="btn-delete" data-task-id="{{ task.pk }}" data-task-title="{{ task.title }}">
+                <a href="{% url 'task_delete' task.pk %}" class="btn-delete">
                     <img src="{% static 'images/delete.png' %}" alt="Delete" class="action-icon">
                 </a>
             </div>
             {% endfor %}
         </div>
     </div>
-</div>
 
-<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Task</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this task: "<span id="modalTaskTitle"></span>"?</p>
-            </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </form>
+
+    <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this task: "<span id="modalTaskTitle"></span>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
@@ -110,11 +112,6 @@
     let draggedTask = null;
 
     document.addEventListener('DOMContentLoaded', function() {
-        const deleteModal = document.getElementById('deleteModal');
-        const modalTaskTitle = document.getElementById('modalTaskTitle');
-        const deleteForm = document.getElementById('deleteForm');
-        const csrfToken = document.getElementById('csrfToken').value;
-
         document.querySelectorAll('.task-card').forEach(card => {
             card.addEventListener('dragstart', handleDragStart);
         });
@@ -122,16 +119,6 @@
         document.querySelectorAll('.column').forEach(column => {
             column.addEventListener('dragover', handleDragOver);
             column.addEventListener('drop', handleDrop);
-        });
-
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function() {
-                const taskId = this.getAttribute('data-task-id');
-                const taskTitle = this.getAttribute('data-task-title');
-                modalTaskTitle.textContent = taskTitle;
-                deleteForm.action = `/task/${taskId}/delete/`;
-                $(deleteModal).modal('show');
-            });
         });
     });
 
@@ -147,16 +134,21 @@
 
     function handleDrop(e) {
         e.preventDefault();
+
         const column = e.target.closest('.column');
         if (!column) return;
+
         const newStatus = column.getAttribute('data-status');
         const taskId = draggedTask.getAttribute('data-task-id');
+
         column.querySelector('.task-list').appendChild(draggedTask);
+
         updateTaskStatus(taskId, newStatus);
     }
 
     function updateTaskStatus(taskId, newStatus) {
         const csrfToken = document.getElementById('csrfToken').value;
+
         fetch(`/update_status/${taskId}/`, {
             method: 'POST',
             headers: {
@@ -166,13 +158,19 @@
             body: JSON.stringify({ status: newStatus })
         })
         .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             return response.json();
         })
         .then(data => {
-            if (!data.success) console.error("Failed to update task status:", data.error);
+            if (!data.success) {
+                console.error("Failed to update task status:", data.error);
+            }
         })
-        .catch(error => console.error("Error updating task status:", error));
+        .catch(error => {
+            console.error("Error updating task status:", error);
+        });
     }
 </script>
 {% endblock %}

@@ -75,7 +75,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     position: relative;
-    margin-bottom: 20px; /* Adds spacing between task cards */
+    margin-bottom: 20px;
 }
 
 h2 {
@@ -222,26 +222,67 @@ form + a:hover {
     }
 }
 
-.modal-content {
-    background-color: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+
+/* Container for the task deletion section */
+.delete-task-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.modal-footer .btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: all 0.3s ease;
+/* Heading for delete task */
+.delete-task-heading {
+    font-size: 24px;
+    color: #5f0f40;
+    margin-bottom: 20px;
 }
 
-.modal-footer .btn-danger {
-    background-color: #e74c3c;
+/* Confirmation message */
+.delete-task-message {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Form for delete and cancel buttons */
+.delete-task-form {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Delete button styles */
+.delete-task-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #9a031e;
     color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.modal-footer .btn-secondary {
-    background-color: #95a5a6;
-    color: white;
+.delete-task-btn:hover {
+    background-color: #cc2b44;
 }
+
+/* Cancel button styles */
+.cancel-btn {
+    padding: 10px 20px;
+    background-color: #0f4c5c;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #0c3a47;
+}
+
