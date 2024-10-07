@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container
-COPY . .
+COPY task_manager .
 
 # Install any dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
