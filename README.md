@@ -2,7 +2,8 @@
 
 A simple task management system built using **Django** for the backend, **HTML/CSS**, and **JavaScript** for the frontend. It allows users to create, edit, delete, and drag-and-drop tasks between different status columns.
 
-<img width="1440" alt="Screenshot 2024-10-10 at 15 14 38" src="https://github.com/user-attachments/assets/a41340de-bf10-4766-a7c4-f28d01f294c7">
+<img width="1440" alt="Screenshot 2024-10-11 at 12 47 26" src="https://github.com/user-attachments/assets/29ef6ebe-fc9b-49ce-a9c9-c1ac19904443">
+
 
 
 
