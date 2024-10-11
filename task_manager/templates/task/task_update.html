@@ -1,24 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Edit Task</h2>
-   <form method="POST" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px;">
-        {% csrf_token %}
-        <label for="title">Title:</label>
-        {{ form.title }}
+<h2>Edit Task</h2>
+<form method="POST" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px;">
+    {% csrf_token %}
+    <label for="title">Title:</label>
+    {{ form.title }}
 
-        <label for="description">Description:</label>
-        {{ form.description }}
+    <label for="description">Description:</label>
+    {{ form.description }}
 
-        <label for="status">Status:</label>
-        {{ form.status }}
+    <label for="status">Status:</label>
+    {{ form.status }}
 
-        <label for="priority">Priority:</label>
-        {{ form.priority }}
+    <label for="priority">Priority:</label>
+    {{ form.priority }}
 
-        <label for="deadline">Deadline:</label>
-        <input type="date" name="deadline" id="deadline" min="{{ today }}">
+    <label for="deadline">Deadline:</label>
+    {{ form.deadline }}
 
-        <button type="submit">Save Task</button>
-    </form>
+    <button type="submit">Save Task</button>
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deadlineInput = document.getElementById('id_deadline');
+        const today = new Date().toISOString().split('T')[0];
+        deadlineInput.setAttribute('min', today);  // This sets the min attribute to today’s date
+    });
+</script>
 {% endblock %}
+

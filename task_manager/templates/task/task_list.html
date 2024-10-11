@@ -11,7 +11,12 @@
             <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
-                <p>Priority: {{ task.priority }}</p>
+                <p class="priority {{ task.priority|lower }}">Priority: {{ task.priority }}</p>
+                {% if task.deadline %}
+                <p class="deadline">Deadline: {{ task.deadline|date:"F j, Y" }}</p>
+                {% else %}
+                <p class="no-deadline">No Deadline</p>
+                {% endif %}
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
@@ -20,6 +25,7 @@
                 </a>
             </div>
             {% endfor %}
+
         </div>
     </div>
 
@@ -30,7 +36,12 @@
             <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
-                <p>Priority: {{ task.priority }}</p>
+                <p class="priority {{ task.priority|lower }}">Priority: {{ task.priority }}</p>
+                {% if task.deadline %}
+                <p class="deadline">Deadline: {{ task.deadline|date:"F j, Y" }}</p>
+                {% else %}
+                <p class="no-deadline">No Deadline</p>
+                {% endif %}
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
@@ -49,7 +60,12 @@
             <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
-                <p>Priority: {{ task.priority }}</p>
+                <p class="priority {{ task.priority|lower }}">Priority: {{ task.priority }}</p>
+                {% if task.deadline %}
+                <p class="deadline">Deadline: {{ task.deadline|date:"F j, Y" }}</p>
+                {% else %}
+                <p class="no-deadline">No Deadline</p>
+                {% endif %}
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
@@ -68,7 +84,12 @@
             <div class="task-card" data-task-id="{{ task.pk }}" draggable="true">
                 <h4>{{ task.title }}</h4>
                 <p>{{ task.description }}</p>
-                <p>Priority: {{ task.priority }}</p>
+                <p class="priority {{ task.priority|lower }}">Priority: {{ task.priority }}</p>
+                {% if task.deadline %}
+                <p class="deadline">Deadline: {{ task.deadline|date:"F j, Y" }}</p>
+                {% else %}
+                <p class="no-deadline">No Deadline</p>
+                {% endif %}
                 <a href="{% url 'task_update' task.pk %}" class="btn-edit">
                     <img src="{% static 'images/edit.png' %}" alt="Edit" class="action-icon">
                 </a>
